@@ -45,18 +45,22 @@ const ManagementDropdown = memo(({ onClose, isAdmin }) => (
   <div style={{
     position: 'absolute',
     top: '100%',
-    right: 0,
+    left: '50%',
+    transform: 'translateX(-50%)',
     backgroundColor: '#004780',
     borderRadius: '4px',
     boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
     zIndex: 1000,
-    minWidth: '180px',
+    minWidth: '200px',
     '@media (maxWidth: 768px)': {
       position: 'static',
       width: '100%',
       marginTop: '5px'
     }
-  }}>
+    
+  }
+  }                             
+ >
     <Link 
       to="/" 
       style={{
@@ -64,7 +68,8 @@ const ManagementDropdown = memo(({ onClose, isAdmin }) => (
         padding: '10px 15px',
         color: 'white',
         textDecoration: 'none',
-        borderBottom: '1px solid #003b66'
+        borderBottom: '1px solid #003b66',
+        
       }}
       onClick={onClose}
     >
@@ -296,8 +301,13 @@ const Nav = memo(function Nav() {
                             className="btn btn-primary" 
                             style={{ 
                                 backgroundColor: '#004780',
+                                border: 'none',
+                                color: 'white',
+                                transition: 'all 0.2s ease',          
                                 '@media (maxWidth: 768px)': { width: '100%', textAlign: 'left' }
                             }}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
                         >
                             Patients
                         </Link>
@@ -306,8 +316,13 @@ const Nav = memo(function Nav() {
                             className="btn btn-primary" 
                             style={{ 
                                 backgroundColor: '#004780',
+                                border: 'none',
+                                color: 'white',
+                                transition: 'all 0.2s ease',
                                 '@media (maxWidth: 768px)': { width: '100%', textAlign: 'left' }
                             }}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
                         >
                             Intake Form
                         </Link>
@@ -336,8 +351,13 @@ const Nav = memo(function Nav() {
                                 style={{ 
                                     backgroundColor: '#004780',
                                     border: 'none',
+                                    width: "190px",
+                                    transition: 'all 0.2s ease',
+                    
                                     '@media (maxWidth: 768px)': { width: '100%', textAlign: 'left' }
                                 }}
+                                onMouseEnter={handleMouseEnter}
+                                onMouseLeave={handleMouseLeave}
                             >
                                 Management <i className="bi bi-caret-down-fill"></i>
                             </button>
