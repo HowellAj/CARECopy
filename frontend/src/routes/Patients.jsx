@@ -216,19 +216,24 @@ const Patients = () => {
   /////////////////////////////
 
   // Handle patient card click and restrict access based on the selected shift
-  const handleCardClick = useCallback((id) => {
+  const handleCardClick = useCallback((bed) => {
     const storedShift = sessionStorage.getItem('selectedShift'); // Get the selected shift from sessionStorage
+    
     if (!isAdmin && !isInstructor && !storedShift) {
       alert('Please select a shift first.'); // Alert if shift is not selected
       return;
     }
 
+    if (bed.isOccupied){
+      navigate(`/patients/${bed.patientId}`)//Go to patients page
+    } else {
+      navigate('/intake', { state: { bed } })//Create new patient at this bed
+    }
     // Get the current hour to check if it matches the selected shift
     const currentTime = new Date();
     const currentHour = currentTime.getHours();
 
-    navigate(`/patients/${id}`); // Navigate to the patient details page
-  }, []);
+  }, [isAdmin,isInstructor,navigate]);
 
   const handleRemoveBed = (bedNumber) => {
     clearBed(bedNumber);  // found in /services/bedservice! :D 

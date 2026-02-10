@@ -81,6 +81,7 @@ const ManagementDropdown = memo(({ onClose, isAdmin }) => (
         display: 'block',
         padding: '10px 15px',
         color: 'white',
+        borderBottom: '1px solid #003b66',
         textDecoration: 'none'
       }}
       onClick={onClose}
