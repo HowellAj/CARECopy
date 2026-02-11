@@ -51,7 +51,6 @@ export function UserProvider({ children }) {
           // Check if user has a profile in our system
           const response = await api.get('/api/auth/profile');
           const profile = response.data;
-          
           // User exists - merge profile data with MSAL data
           setUser({
             ...basicUserData,

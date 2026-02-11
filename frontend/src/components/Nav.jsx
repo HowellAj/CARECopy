@@ -370,7 +370,21 @@ const Nav = memo(function Nav() {
                     )}
 
                     {/* Full name (desktop) */}
-                    <div style={styles.fullName}>{user?.fullName}</div>
+                     <Link 
+                            to="/nurse" 
+                            className="btn btn-primary" 
+                            style={{ 
+                                backgroundColor: '#004780',
+                                border: 'none',
+                                color: 'white',
+                                transition: 'all 0.2s ease',
+                                '@media (maxWidth: 768px)': { width: '100%', textAlign: 'left' }
+                            }}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
+                        >
+                            {user?.fullName}
+                        </Link>
                     
                     {/* Initials (smaller screens) */}
                     <div style={styles.nameInitials}>

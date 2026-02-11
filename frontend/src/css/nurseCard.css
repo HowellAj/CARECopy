@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body{
+    background-image: url("../img/nurses-stock.jpg");
+    background-size: cover;       
+    background-position: center;  
+    background-repeat: no-repeat; 
+}
+
+body::before {
+    content: "";
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.45); 
+    pointer-events: none; 
+    z-index: -1;
+}
+
+
+
+.nurse-card-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center;    
+    width: 100%;
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+
+}
+
+.nurse-card {
+    background: linear-gradient(135deg, #0062ff, #004780) !important;
+    padding: 20px;
+    margin-top: 16px;
+    border-radius: 8px !important;
+    width: 32rem;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+}
+
+.nurse-card-title {
+    color: rgb(255, 255, 255);
+    font-size: 32px;
+    padding: 10px;
+}
+
+.content-container{
+    background-color: #e6e6e675;
+    border-radius: 8px;
+    display: flex;
+    font-size: 18px;
+    padding: 12px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    
+
+}
+
+.nurse-card-footer{
+    color: white;
+
+}
+
