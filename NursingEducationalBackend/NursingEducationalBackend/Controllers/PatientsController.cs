@@ -235,6 +235,9 @@ namespace NursingEducationalBackend.Controllers
                 case AssessmentTypeEnum.AcuteProgress:
                     tableData = await _context.AcuteProgresses.FirstOrDefaultAsync(ap => ap.AcuteProgressId == tableId);
                     break;
+                case AssessmentTypeEnum.NEWS2:
+                    tableData = await _context.NEWS2s.FirstOrDefaultAsync(n => n.News2Id == tableId);
+                    break;
                 default:
                     return BadRequest(new { message = "Invalid assessment type" });
             }
@@ -846,6 +849,7 @@ namespace NursingEducationalBackend.Controllers
                 "dischargechecklist" => "DischargeChecklist",
                 "elimination" => "Elimination",
                 "labsdiagnosticsblood" => "LabsDiagnosticsBlood",
+                "news2" => "NEWS2",
                 "nutrition" => "Nutrition",
                 "skin" => "SkinSensoryAid",
                 "progressnote" => "ProgressNote",

@@ -42,6 +42,8 @@ public partial class NursingDbContext : IdentityDbContext<IdentityUser>
 
     public virtual DbSet<Nurse> Nurses { get; set; }
 
+    public virtual DbSet<NEWS2> NEWS2s { get; set; }
+
     public virtual DbSet<Nutrition> Nutritions { get; set; }
 
     public virtual DbSet<Patient> Patients { get; set; }
@@ -228,7 +230,8 @@ public partial class NursingDbContext : IdentityDbContext<IdentityUser>
                 new AssessmentType { AssessmentTypeId = (int)AssessmentTypeEnum.AcuteProgress, Name = "Progress Note", RouteKey = "AcuteProgress" },
                 new AssessmentType { AssessmentTypeId = (int)AssessmentTypeEnum.LabsDiagnosticsAndBlood, Name = "Labs / Diagnostics / Blood", RouteKey = "LabsDiagnosticsBlood" },
                 new AssessmentType { AssessmentTypeId = (int)AssessmentTypeEnum.DischargeChecklist, Name = "Discharge Checklist", RouteKey = "DischargeChecklist" },
-                new AssessmentType { AssessmentTypeId = (int)AssessmentTypeEnum.ConsultCurrentIllness, Name = "Consults / Current Illness", RouteKey = "ConsultCurrentIllness" }
+                new AssessmentType { AssessmentTypeId = (int)AssessmentTypeEnum.ConsultCurrentIllness, Name = "Consults / Current Illness", RouteKey = "ConsultCurrentIllness" },
+                new AssessmentType { AssessmentTypeId = (int)AssessmentTypeEnum.NEWS2, Name = "NEWS2", RouteKey = "NEWS2"}
             );
         });
 
@@ -252,7 +255,8 @@ public partial class NursingDbContext : IdentityDbContext<IdentityUser>
                 new RotationAssessment { RotationId = 2, AssessmentTypeId = (int)AssessmentTypeEnum.AcuteProgress },
                 new RotationAssessment { RotationId = 2, AssessmentTypeId = (int)AssessmentTypeEnum.LabsDiagnosticsAndBlood },
                 new RotationAssessment { RotationId = 2, AssessmentTypeId = (int)AssessmentTypeEnum.ConsultCurrentIllness },
-                new RotationAssessment { RotationId = 2, AssessmentTypeId = (int)AssessmentTypeEnum.DischargeChecklist }
+                new RotationAssessment { RotationId = 2, AssessmentTypeId = (int)AssessmentTypeEnum.DischargeChecklist },
+                new RotationAssessment { RotationId = 2, AssessmentTypeId = (int)AssessmentTypeEnum.NEWS2 }
             );
         });
 

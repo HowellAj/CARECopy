@@ -54,6 +54,9 @@ namespace NursingEducationalBackend.Utilities
                 case AssessmentTypeEnum.AcuteProgress:
                     tableRecordId = await SubmitAcuteProgressData(context, value);
                     break;
+                case AssessmentTypeEnum.NEWS2:
+                    tableRecordId = await SubmitNEWS2Data(context, value);
+                    break;
             }
 
             submission.TableRecordId = tableRecordId;
@@ -152,6 +155,33 @@ namespace NursingEducationalBackend.Utilities
             
             return mobilityAndSafetyEntity.MobilityAndSafetyId;
         }
+
+        private async Task<int> SubmitNEWS2Data(NursingDbContext context, object value)
+        {
+            var data = JsonConvert.DeserializeObject<PatientNEWS2DTO>(value.ToString());
+            var entry = new NEWS2
+            {
+                RespirationRate = data.RespirationRate,
+                SpO2Scale1 = data.SpO2Scale1,
+                SpO2Scale2 = data.SpO2Scale2,
+                OnOxygen = data.OnOxygen,
+                OxygenFlowRate = data.OxygenFlowRate,
+                BPSystolic = data.BPSystolic,
+                BPDiastolic = data.BPDiastolic,
+                PulseBPM = data.PulseBPM,
+                Consciousness = data.Consciousness,
+                TemperatureC = data.TemperatureC,
+                TotalScore = data.TotalScore,
+                MonitoringFrequency = data.MonitoringFrequency,
+                EscalationOfCare = data.EscalationOfCare
+            };
+
+            context.NEWS2s.Add(entry);
+            await context.SaveChangesAsync();
+
+            return entry.News2Id;
+        }
+
 
         private async Task<int> SubmitNutritionData(NursingDbContext context, object value)
         {

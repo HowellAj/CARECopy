@@ -13,6 +13,7 @@ namespace NursingEducationalBackend.Models
         AcuteProgress = 9,
         LabsDiagnosticsAndBlood = 10,
         DischargeChecklist = 11,
-        ConsultCurrentIllness = 12
+        ConsultCurrentIllness = 12,
+        NEWS2 = 13
     }
 }

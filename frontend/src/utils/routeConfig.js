@@ -9,6 +9,7 @@ export const assessmentRoutes = {
     Elimination: "/patients/:id/elimination",
     LabsDiagnosticsBlood: "/patients/:id/labsdiagnosticsblood",
     MobilityAndSafety: "/patients/:id/mobilityandsafety",
+    NEWS2: "/patients/:id/news2",
     Nutrition: "/patients/:id/nutrition",
     ProgressNote: "/patients/:id/progressnote",
     AcuteProgress: "/patients/:id/acuteprogress",
