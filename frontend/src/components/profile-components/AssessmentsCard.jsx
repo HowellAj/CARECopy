@@ -20,7 +20,11 @@ import {
   Hearing as SensoryAidsIcon,
   Note as NoteIcon,
   ChevronRight as ChevronRightIcon,
-  Mood as MoodIcon
+  Mood as MoodIcon,
+  Home as DischargeIcon,
+  MonitorHeart as News2Icon,
+  Science as LabsDiagnosticsIcon,
+  PsychologyAlt as ConsultsIcon
 } from '@mui/icons-material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { assessmentRoutes } from '../../utils/routeConfig';
@@ -83,7 +87,11 @@ const AssessmentsCard = () => {
   const iconMap = {
     'ADL': <ADLIcon color="primary" />,
     'Cognitive': <CognitiveIcon color="primary" />,
+    'ConsultCurrentIllness': <ConsultsIcon color="primary" />,
+    'DischargeChecklist': <DischargeIcon color="primary" />,
     'Elimination': <EliminationIcon color="primary" />,
+    'LabsDiagnosticsBlood': <LabsDiagnosticsIcon color="primary" />,
+    'NEWS2': <News2Icon color="primary" />,
     'MobilityAndSafety': <MobilityandSafetyIcon color="primary" />,
     'Nutrition': <NutritionIcon color="primary" />,
     'SkinSensoryAid': <SensoryAidsIcon color="primary" />,
