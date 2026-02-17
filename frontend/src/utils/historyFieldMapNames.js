@@ -49,6 +49,22 @@ export const fieldNameMap = {
   crashMats: "Crash Mats",
   bedAlarm: "Bed Alarm",
 
+  // NEWs2 fields
+  news2Id: "NEWS2 ID",
+  respirationRate: "Respiration Rate",
+  spO2Scale1: "SpO2 Scale 1",
+  spO2Scale2: "SpO2 Scale 2",
+  onOxygen: "On Oxygen",
+  oxygenFlowRate: "Oxygen Flow Rate",
+  bpSystolic: "Blood Pressure Systolic",
+  bpDiastolic: "Blood Pressure Diastolic",
+  pulseBPM: "Pulse (BPM)",
+  consciousness: "Consciousness",
+  temperatureC: "Temperature (°C)",
+  totalScore: "Total Score",
+  monitoringFrequency: "Monitoring Frequency (Hours)",
+  escalationOfCare: "Escalation of Care",
+
   // Nutrition fields
   nutritionId: "Nutrition ID",
   diet: "Diet Type",
