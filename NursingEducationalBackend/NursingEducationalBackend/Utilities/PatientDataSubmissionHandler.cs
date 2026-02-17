@@ -166,6 +166,7 @@ namespace NursingEducationalBackend.Utilities
                 SpO2Scale2 = data.SpO2Scale2,
                 OnOxygen = data.OnOxygen,
                 OxygenFlowRate = data.OxygenFlowRate,
+                OxygenDevice = data.OxygenDevice,
                 BPSystolic = data.BPSystolic,
                 BPDiastolic = data.BPDiastolic,
                 PulseBPM = data.PulseBPM,

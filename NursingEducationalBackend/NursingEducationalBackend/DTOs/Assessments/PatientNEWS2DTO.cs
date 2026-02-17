@@ -12,6 +12,8 @@
 
         public int OxygenFlowRate { get; set; }
 
+        public string? OxygenDevice { get; set; }
+
         public int? BPSystolic { get; set; }
 
         public int? BPDiastolic { get; set; }
