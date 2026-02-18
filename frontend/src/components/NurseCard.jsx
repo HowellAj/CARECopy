@@ -1,5 +1,5 @@
 import { useUser } from "../context/UserContext"
-import { Card, CardContent, CardHeader, CardActions, Button} from "@mui/material"
+import { Card, CardContent, CardHeader, CardActions, Button, List,ListItem, ListItemText} from "@mui/material"
 
 
 export default function NurseCard(){
@@ -8,43 +8,69 @@ export default function NurseCard(){
 
     return(   
         <div className="nurse-card-container">        
-
            <Card className="nurse-card">
-                
-                <CardHeader className="nurse-card-title"title={`Nurse ${user?.fullName}`} />
+
+                <CardHeader 
+                sx={{ p: 0, paddingLeft: 3, paddingRight: 0, paddingTop: 2 }}
+                className="nurse-card-title" 
+                title={`Nurse ${user?.fullName}`} />
+
+                <hr className="header-divider"/>
 
                 <CardContent>
-                    <div className="content-container" style = {{ display: "flex", flexDirection: "row", gap: "20px" }}>
-                        <div>
-                            <p>Your Instructor:</p>
-                            <p>Your Class:</p>
-                            <p>Your Email:</p>
-                        </div>
+                    <div className="list-container" style = {{ display: "flex", flexDirection: "row", height: 'auto', justifyContent: 'center',  gap: "20px" }}>
+                        <List disablePadding>
+                            <ListItem
+                            sx={{ display: "flex", justifyContent: "space-between" }}
+                            >
+                                <ListItemText primary="Instructor:" primaryTypographyProps={{ fontWeight: "bold", color: 'rgb(20, 78, 250)' }}/>
+                                <ListItemText primary="Filler Name"  />
+                            </ListItem>
+                            
+                            <hr className='list-divider'/>
+                            
+                            <ListItem
+                            sx={{ display: "flex", justifyContent: "space-between" }}
+                            >
+                                <ListItemText primary="Class:"primaryTypographyProps={{ fontWeight: "bold", color: 'rgb(20, 78, 250)' }}  />
+                                <ListItemText primary={user?.className || "Unenrolled"} sx={{ textAlign: "right" }} />
+                            </ListItem>
 
-                        {/* INSTRUCTOR NAME NOT CURRENTLY AVAILABLE*/}
-                        <div>
-                            <p>{"Filler Name"}</p>
-                            <p>{user?.className || "Unenrolled"}</p>
-                            <p>{user?.email}</p>
+                            <hr className='list-divider'/>
 
-                        </div>
+                            <ListItem
+                            sx={{ display: "flex", justifyContent: "space-between" }}
+                            >
+                                <ListItemText primary="Campus:"primaryTypographyProps={{ fontWeight: "bold", color: 'rgb(20, 78, 250)' }}  />
+                                <ListItemText primary={"Static Campus"} sx={{ textAlign: "right" }} />
+                            </ListItem>
+
+                            <hr className='list-divider'/>
+
+                            <ListItem
+                            sx={{ display: "flex", justifyContent: "space-between" }}
+                            >
+                                <ListItemText primary="Email:" sx={{ flexBasis: "50%" }} primaryTypographyProps={{ fontWeight: "bold", color: 'rgb(20, 78, 250)' }}/>
+                                <ListItemText primary={user?.email} sx={{ textAlign: "right" }} />
+                            </ListItem>
+                        </List>
                     </div>
 
-
-                    <div className="content-container" style = {{ display: "flex", flexDirection: "row", height: '10rem', justifyContent: 'center',  gap: "20px" }}>
+                    <div className="list-container" style = {{ display: "flex", flexDirection: "row", height: 'auto', minHeight:'10rem', justifyContent: 'center',  gap: "20px", marginTop: '20px' }}>
                         <div>
                             <p> Your Assessments </p>
                         </div>
                     </div>
                     
-                    <div className="content-container" style = {{ display: "flex", flexDirection: "row", alignItems:'center', justifyContent: 'center' }}>
+                    {/* <div className="content-container" style = {{ display: "flex", flexDirection: "row", alignItems:'center', justifyContent: 'center' }}>
                         <CardActions>
                             <Button style ={{backgroundColor: "#d48d30"}} variant="contained" >
                                 Reset Password
                             </Button>
                         </CardActions>
-                    </div>
+                    </div> */}
                 </CardContent>
+
                 <p className="nurse-card-footer">If any info appears incorrect, please contact your instructor.</p>
            </Card>
             

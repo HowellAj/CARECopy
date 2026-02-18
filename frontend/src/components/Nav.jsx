@@ -316,9 +316,10 @@ const Nav = memo(function Nav() {
             padding: '0 8px'
         },
         modalDivider:{
-            width: '95%',         
-            border: '3px solid #0079db',
+            width: '95%',        
+            border: '3px solid #000000',
             margin: '0px 12px 12px 12px',
+            opacity: '0.45',
             borderRadius: '2px'
         },
         modalCloseBtn:{

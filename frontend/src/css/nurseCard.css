@@ -1,25 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-body{
-    background-image: url("../img/nurses-stock.jpg");
-    background-size: cover;       
-    background-position: center;  
-    background-repeat: no-repeat; 
-}
 
-body::before {
-    content: "";
-    position: fixed; 
-    top: 0;
-    left: 0;
+.nurse-profile-page{
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.45); 
-    pointer-events: none; 
-    z-index: -1;
+    padding-bottom: 24px;
+    background: linear-gradient(135deg, #0062ff, #004780) !important;
+
 }
-
-
 
 .nurse-card-container {
     display: flex;
@@ -32,8 +20,7 @@ body::before {
 }
 
 .nurse-card {
-    background: linear-gradient(135deg, #0062ff, #004780) !important;
-    padding: 20px;
+    background: white;
     margin-top: 16px;
     border-radius: 8px !important;
     width: 32rem;
@@ -42,25 +29,41 @@ body::before {
 }
 
 .nurse-card-title {
-    color: rgb(255, 255, 255);
+    color: rgb(20, 78, 250);
     font-size: 32px;
-    padding: 10px;
+    text-align: left;
 }
 
-.content-container{
-    background-color: #e6e6e675;
-    border-radius: 8px;
-    display: flex;
-    font-size: 18px;
-    padding: 12px;
-    margin-bottom: 10px;
-    font-weight: bold;
-    
 
+.list-container{
+    background-color: #e6e6e6;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px;
+}
+
+.header-divider{
+    width: 80%;
+    height: 8px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    background-color: #0040ff !important;
+}
+
+.list-divider{
+    width: 66%;
+    height: 4px;
+    justify-self: center;
+    background-color: rgb(200, 200, 200);
+    border-radius: 12px;
+    border-width: 0px;
+    opacity: 1;
+    
 }
 
 .nurse-card-footer{
-    color: white;
+    color: rgb(0, 0, 0);
 
 }
 
