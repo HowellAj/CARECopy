@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
-import axios from 'axios';
 import AssessmentsCard from '../components/profile-components/AssessmentsCard';
 import '../css/assessment_styles.css';
 import { Snackbar, Alert } from '@mui/material';
@@ -616,6 +615,21 @@ const PatientNEWS2  = () => {
 
 
             </div>
+
+            <Snackbar
+                open={snackbar.open}
+                autoHideDuration={6000}
+                onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            >
+                <Alert
+                    onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}
+                    severity={snackbar.severity}
+                    sx={{ width: '100%' }}
+                >
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
         </div>
     );
 };

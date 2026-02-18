@@ -18,7 +18,7 @@ namespace NursingEducationalBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class PatientsController : ControllerBase
     {
         private readonly NursingDbContext _context;
@@ -273,6 +273,8 @@ namespace NursingEducationalBackend.Controllers
                     SubmittedDate = r.CreatedDate,
                     NurseId = r.NurseId,
                     SubmittedNurse = r.Nurse.FullName,
+                    PatientId = r.PatientId,
+                    PatientName = patient.FullName,
                     RotationId = r.RotationId,
                     RotationName = r.Rotation.Name,
                     AssessmentSubmissions = r.AssessmentSubmissions.Select(asub => new AssessmentSubmissionSummaryDTO

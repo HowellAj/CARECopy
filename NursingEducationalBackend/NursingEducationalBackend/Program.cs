@@ -67,7 +67,11 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 
-//app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
 app.UseStaticFiles();
 app.UseRouting();
 app.UseCors(AllowFrontendOrigins);
