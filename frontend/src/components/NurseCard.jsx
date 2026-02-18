@@ -2,9 +2,6 @@ import { useUser } from "../context/UserContext"
 import { Card, CardContent, CardHeader, CardActions, Button} from "@mui/material"
 
 
-import "../css/NurseCard.css"
-
-
 export default function NurseCard(){
 
     const {user} = useUser()
@@ -36,7 +33,7 @@ export default function NurseCard(){
 
                     <div className="content-container" style = {{ display: "flex", flexDirection: "row", height: '10rem', justifyContent: 'center',  gap: "20px" }}>
                         <div>
-                            <p> Your Patients </p>
+                            <p> Your Assessments </p>
                         </div>
                     </div>
                     

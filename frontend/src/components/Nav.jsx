@@ -1,9 +1,13 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useUser } from '../context/UserContext';
 import { useCallback, memo, useState, useEffect, useMemo } from 'react';
+import { getAssessmentCount } from '../utils/assessmentStorage';
 import PropTypes from 'prop-types';
+
+
+
 
 // =========================================
 // Sub-Components
@@ -123,6 +127,10 @@ const Nav = memo(function Nav() {
     const [selectedUnit, setSelectedUnit] = useState('Harbourside Hospital');
     const [showManagementDropdown, setShowManagementDropdown] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
+    const [pendingLogout, setPendingLogout] = useState(false);
+    const navigate = useNavigate();
+
 
     // =========================================
     // Effects
@@ -139,6 +147,14 @@ const Nav = memo(function Nav() {
     // Event Handlers
     // =========================================
     const handleLogout = useCallback(() => {
+        const count = getAssessmentCount();
+
+        if (count > 0) {
+        setPendingLogout(true);
+        setShowLogoutModal(true);
+        return;
+        }
+
         sessionStorage.removeItem('selectedShift');
         setSelectedShift('');
         logout();
@@ -277,12 +293,61 @@ const Nav = memo(function Nav() {
                 justifyContent: 'center',
                 color: 'white'
             }
+        },
+        modalDialog:{
+            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)',
+            border: '2px solid #000000',
+            
+        },
+        modalBody:{
+            backgroundColor: '#ececec',
+            paddingBottom: '0px'
+        },
+        modalFooter:{
+            borderTop: 'none',
+            backgroundColor: '#ececec', 
+            flexDirection:"column"  
+        },
+        modalButtonContainer:{
+            width: '95%',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '0 8px'
+        },
+        modalDivider:{
+            width: '95%',         
+            border: '3px solid #0079db',
+            margin: '0px 12px 12px 12px',
+            borderRadius: '2px'
+        },
+        modalCloseBtn:{
+            width: '32px',
+            height: '32px',
+            borderRadius: '50%',
+            backgroundColor: '#00569c',
+            color: 'white',
+            border: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '20px',
+            cursor: 'pointer',
+        },
+        modalHeader: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
         }
+
+        
     }), [isMobileMenuOpen]);
 
     // =========================================
     // Render
     // =========================================
+
+
     return (
         <nav style={styles.nav}>
             {/* Mobile menu button */}
@@ -408,6 +473,72 @@ const Nav = memo(function Nav() {
                     >
                         Log out
                     </button>
+
+
+                    {/* Log out confirmation modal, should only appear when there are outstanding assesments to publish */}
+                    <div 
+                    className={`modal fade ${showLogoutModal ? "show d-block" : ""}`} 
+                    tabIndex="-1"
+                    role="dialog"
+                    >
+                        <div className="modal-dialog modal-dialog-centered" role="document" >
+                            <div className="modal-content" style = {styles.modalDialog}>
+
+                                <div className="modal-header" style = {styles.modalHeader}>
+                                    <h5 className="modal-title">! Unpublished Assessments</h5>
+
+                                    <button 
+                                        type="button" 
+                                        className="close" 
+                                        onClick={() => setShowLogoutModal(false)}
+                                        style = {styles.modalCloseBtn}
+                                        >
+                                        <span>&times;</span>
+                                    </button>
+
+                                </div>
+
+                                <div className="modal-body" style={styles.modalBody}>
+                                    <p>You still have assessments that haven't been published. Logging out now may lose this data. <br/><br/>
+                                    To publish, return to the Patients page and click the publish assesments button.
+                                    </p>
+                                </div>
+
+                                <div className="modal-footer" style = {styles.modalFooter}>
+                                    <hr style={styles.modalDivider}></hr>
+
+                                    <div style = {styles.modalButtonContainer}>
+                                        <button 
+                                            className="btn btn-danger"
+                                            onClick={() => {
+                                                setShowLogoutModal(false);
+                                                sessionStorage.removeItem('selectedShift');
+                                                setSelectedShift('');
+                                                logout();
+                                            }}
+                                            >
+                                            Log Out Anyway
+                                        </button>
+
+                                        <button 
+                                            className="btn btn-primary" 
+                                            onClick={() => {
+                                                setShowLogoutModal(false);
+                                                navigate("/")
+                                            }}
+                                            >
+                                            Return to Patients
+                                        </button>
+                                    </div>
+                                    
+
+                                </div>
+
+                            </div>
+                        </div>
+                    
+                    </div>
+
                 </div>
             )}
         </nav>
