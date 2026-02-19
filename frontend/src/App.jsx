@@ -9,6 +9,7 @@ import ClassProfile from "./routes/ClassProfile";
 import CreateClass from "./routes/CreateClass";
 import Patients from './routes/Patients.jsx'
 import PatientProfile from "./routes/PatientProfile";
+import NurseProfile from "./routes/NurseProfile.jsx"
 import PatientADL from "./routes/PatientADL";
 import PatientBehaviour from "./routes/PatientBehaviour";
 import PatientCognitive from "./routes/PatientCognitive";
@@ -53,7 +54,9 @@ function App() {
         {/* <Route path="register" element={<Registration />} /> */}
         <Route path="enroll" element={<ClassCodeEnrollment />} />
         <Route path="logout" element={<Logout />} />
+        <Route path="nurse" element={<NurseProfile />} />
         <Route path="unauthorized" element={<Unauthorized />} />
+        
 
         {/* protected routes */}
         <Route element={<RequireAuth allowedRoles={['Nurse', 'Admin', 'Instructor']}/>} >

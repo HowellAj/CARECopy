@@ -22,7 +22,7 @@ import {
   ChevronRight as ChevronRightIcon,
   Mood as MoodIcon
 } from '@mui/icons-material';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams,useMatch } from 'react-router-dom';
 import { assessmentRoutes } from '../../utils/routeConfig';
 
 const AssessmentsCard = () => {
@@ -32,18 +32,21 @@ const AssessmentsCard = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
+
   // Define the assessments with their corresponding route keys
 const assessmentMapping = [
     { display: 'ADL', routeKey: 'ADL' },
+    { display: 'Behaviour', routeKey: 'Behaviour' },
     { display: 'Cognitive', routeKey: 'Cognitive' },
     { display: 'Elimination', routeKey: 'Elimination' },
     { display: 'Mobility / Safety', routeKey: 'MobilityAndSafety' }, // Combined
     { display: 'Nutrition', routeKey: 'Nutrition' },
     { display: 'Sensory Aids / Prosthesis / Skin Integrity', routeKey: 'SkinSensoryAid' },
-    { display: 'Behaviour', routeKey: 'Behaviour' },
     { display: 'Progress Notes', routeKey: 'ProgressNote' },
     // { display: 'Safety', routeKey: 'Safety' },
   ];
+
+  
 
   const iconMap = {
  'ADL': <ADLIcon color="primary" />,
@@ -87,42 +90,53 @@ const assessmentMapping = [
         Patient Assessments
       </Typography>
       <List disablePadding>
-        {assessmentMapping.map((assessment) => (
-          <ListItem
-            key={assessment.display}
-            className="assessment-list-item"
-            button
-            onClick={() => handleNavigation(assessment.routeKey)}
-            sx={{
-              py: 2.5,
-              mb: 1,
-              borderRadius: '8px',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease-in-out',
-              border: '1px solid transparent',
-              '&:hover': { 
-                backgroundColor: 'action.hover',
-                transform: 'translateX(4px)',
-                borderColor: 'primary.main',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-              },
-              '&:active': {
-                transform: 'scale(0.98)',
-                backgroundColor: 'action.selected'
-              }
-            }}
-          >
-            <ListItemIcon sx={{ minWidth: '36px' }}>
-              {React.cloneElement(iconMap[assessment.display] || <NoteIcon color="disabled" />, {
-                className: "assessment-icon"
-              })}
-            </ListItemIcon>
-            <ListItemText
-              primary={assessment.display}
-            />
-            <ChevronRightIcon className="assessment-chevron" fontSize="small" color="disabled" />
-          </ListItem>
-        ))}
+        {assessmentMapping.map((assessment) => {
+
+          const pattern = assessmentRoutes[assessment.routeKey]; 
+          const match = useMatch(pattern);
+          const isActive = Boolean(match);
+
+          return (
+            <ListItem
+              key={assessment.display}
+              className="assessment-list-item"
+              button
+              onClick={() => handleNavigation(assessment.routeKey)}
+              sx={{
+                py: 2.5,
+                mb: 1,
+                borderRadius: '8px',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease-in-out',
+                border: isActive ? '1px solid #1976d2' : '1px solid transparent',
+                borderLeft: isActive? '3px solid #2B71B9 ' : '1px solid transparent',
+                backgroundColor: isActive ? 'rgba(25, 118, 210, 0.15)' : 'transparent',
+                transform: isActive ? 'translateX(4px)' : 'none',
+
+                '&:hover': { 
+                  backgroundColor: 'action.hover',
+                  transform: 'translateX(4px)',
+                  borderColor: 'primary.main',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                },
+                '&:active': {
+                  transform: 'scale(0.98)',
+                  backgroundColor: 'action.selected'
+                }
+              }}
+            >
+              <ListItemIcon sx={{ minWidth: '36px' }}>
+                {React.cloneElement(iconMap[assessment.display] || <NoteIcon color="disabled" />, {
+                  className: "assessment-icon"
+                })}
+              </ListItemIcon>
+              <ListItemText
+                primary={assessment.display}
+              />
+              <ChevronRightIcon className="assessment-chevron" fontSize="small" color="disabled" />
+            </ListItem>
+            );
+      })}
       </List>
     </Card>
 
