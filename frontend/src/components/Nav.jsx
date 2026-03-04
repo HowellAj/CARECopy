@@ -150,8 +150,8 @@ const Nav = memo(function Nav() {
         const count = getAssessmentCount();
 
         if (count > 0) {
-        setPendingLogout(true);
-        setShowLogoutModal(true);
+            setPendingLogout(true);
+            setShowLogoutModal(true);
         return;
         }
 
@@ -516,6 +516,7 @@ const Nav = memo(function Nav() {
                                                 sessionStorage.removeItem('selectedShift');
                                                 setSelectedShift('');
                                                 logout();
+                                                navigate("/login")
                                             }}
                                             >
                                             Log Out Anyway
