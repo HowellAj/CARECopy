@@ -7,8 +7,10 @@ import Logout from "./routes/Logout";
 import AdminProfile from "./routes/AdminProfile";
 import ClassProfile from "./routes/ClassProfile";
 import CreateClass from "./routes/CreateClass";
+import EditClass from "./routes/EditClass"
 import Patients from './routes/Patients.jsx'
 import PatientProfile from "./routes/PatientProfile";
+import NurseProfile from "./routes/NurseProfile.jsx"
 import PatientADL from "./routes/PatientADL";
 import PatientBehaviour from "./routes/PatientBehaviour";
 import PatientCognitive from "./routes/PatientCognitive";
@@ -29,6 +31,7 @@ import InstructorProfile from "./routes/InstructorProfile.jsx";
 import RegistrationInstructor from "./routes/RegistrationInstructor.jsx";
 import ClassCodeEnrollment from "./routes/ClassCodeEnrollment.jsx";
 import { useMsal } from "@azure/msal-react";
+import IdleSessionManager from "./components/IdleSessionManager.jsx"
 import PatientConsultCurrentIllness from "./routes/PatientConsultCurrentIllness.jsx";
 
 function App() {
@@ -51,14 +54,17 @@ function App() {
   }, [instance, navigate]);
 
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        {/* public routes */}
-        <Route path="login" element={<Login />} />
-        {/* <Route path="register" element={<Registration />} /> */}
-        <Route path="enroll" element={<ClassCodeEnrollment />} />
-        <Route path="logout" element={<Logout />} />
-        <Route path="unauthorized" element={<Unauthorized />} />
+    <IdleSessionManager> 
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          {/* public routes */}
+          <Route path="login" element={<Login />} />
+          {/* <Route path="register" element={<Registration />} /> */}
+          <Route path="enroll" element={<ClassCodeEnrollment />} />
+          <Route path="logout" element={<Logout />} />
+          <Route path="nurse" element={<NurseProfile />} /> 
+          <Route path="unauthorized" element={<Unauthorized />} />
+          
 
         {/* protected routes */}
         <Route element={<RequireAuth allowedRoles={['Nurse', 'Admin', 'Instructor']}/>} >
@@ -79,23 +85,26 @@ function App() {
           <Route path="patients/:id/acuteprogress" element={<PatientAcuteProgress />} />
           <Route path="patients/:id/skinandsenoryaid" element={<PatientSkinSensoryAid />} />
 
-          <Route element={<RequireAuth allowedRoles={['Instructor', 'Admin']}/>} >
-            <Route path="admin" element={<AdminProfile />} />
-            <Route path="admin/class/:id" element={<ClassProfile />} />
-            <Route path="admin/class/create" element={<CreateClass />} />
+            <Route element={<RequireAuth allowedRoles={['Instructor', 'Admin']}/>} >
+              <Route path="admin" element={<AdminProfile />} />
+              <Route path="admin/class/:id" element={<ClassProfile />} />
+              <Route path="admin/class/create" element={<CreateClass />} />
+              <Route path="admin/class/edit/:id" element={<EditClass />} />
+
+            </Route>
+
+            <Route element={<RequireAuth allowedRoles={['Admin']}/>} > 
+              {/* Admin only */}
+              <Route path="instructors" element={<InstructorProfile />} />
+            </Route>
           </Route>
 
-          <Route element={<RequireAuth allowedRoles={['Admin']}/>} > 
-            {/* Admin only */}
-            <Route path="instructors" element={<InstructorProfile />} />
-          </Route>
+          {/* catch all (page not found) */}
+          <Route path="*" element={<PageNotFound />} />
+
         </Route>
-
-        {/* catch all (page not found) */}
-        <Route path="*" element={<PageNotFound />} />
-
-      </Route>
-    </Routes>
+      </Routes>
+    </IdleSessionManager>
   );
 }
 

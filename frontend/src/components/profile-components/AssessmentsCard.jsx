@@ -26,7 +26,7 @@ import {
   Science as LabsDiagnosticsIcon,
   PsychologyAlt as ConsultsIcon
 } from '@mui/icons-material';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams,useMatch } from 'react-router-dom';
 import { assessmentRoutes } from '../../utils/routeConfig';
 import api from '../../utils/api';
 
@@ -83,6 +83,8 @@ const AssessmentsCard = () => {
 //     { display: 'Progress Notes', routeKey: 'ProgressNote' },
 //     // { display: 'Safety', routeKey: 'Safety' },
 //   ];
+
+  
 
   const iconMap = {
     'ADL': <ADLIcon color="primary" />,

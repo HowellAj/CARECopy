@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import { useUser } from "../context/UserContext";
 import { Snackbar, Alert } from '@mui/material';
+
 import '../css/assessment_styles.css';
 import '../css/patient_admin_styles.css';
 import LazyLoading from "../components/Spinner";
@@ -16,6 +17,10 @@ import { BorderAll } from "@mui/icons-material";
 
 const PatientForm = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const prefilledBed = location.state?.bed;
+
 
     //notifications
     const [snackbar, setSnackbar] = useState({
@@ -33,7 +38,7 @@ const PatientForm = () => {
         PatientWristId: "",
         Dob: "",
         ImageFilename: "",
-        BedNumber: "",
+        BedNumber: prefilledBed?.bedNumber?.toString() || "",
         NextOfKin: "",
         NextOfKinPhone: "",
         AdmissionDate: new Date().toISOString().split('T')[0],

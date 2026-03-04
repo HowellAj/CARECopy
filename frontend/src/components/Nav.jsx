@@ -3,7 +3,11 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useUser } from '../context/UserContext';
 import { useCallback, memo, useState, useEffect, useMemo } from 'react';
+import { getAssessmentCount } from '../utils/assessmentStorage';
 import PropTypes from 'prop-types';
+
+
+
 
 // =========================================
 // Sub-Components
@@ -57,18 +61,22 @@ const ManagementDropdown = memo(({ onClose, isAdmin }) => (
   <div style={{
     position: 'absolute',
     top: '100%',
-    right: 0,
+    left: '50%',
+    transform: 'translateX(-50%)',
     backgroundColor: '#004780',
     borderRadius: '4px',
     boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
     zIndex: 1000,
-    minWidth: '180px',
+    minWidth: '200px',
     '@media (maxWidth: 768px)': {
       position: 'static',
       width: '100%',
       marginTop: '5px'
     }
-  }}>
+    
+  }
+  }                             
+ >
     <Link 
       to="/" 
       style={{
@@ -76,7 +84,8 @@ const ManagementDropdown = memo(({ onClose, isAdmin }) => (
         padding: '10px 15px',
         color: 'white',
         textDecoration: 'none',
-        borderBottom: '1px solid #003b66'
+        borderBottom: '1px solid #003b66',
+        
       }}
       onClick={onClose}
     >
@@ -88,6 +97,7 @@ const ManagementDropdown = memo(({ onClose, isAdmin }) => (
         display: 'block',
         padding: '10px 15px',
         color: 'white',
+        borderBottom: '1px solid #003b66',
         textDecoration: 'none'
       }}
       onClick={onClose}
@@ -131,6 +141,10 @@ const Nav = memo(function Nav() {
     const [selectedUnit, setSelectedUnit] = useState('Harbourside Hospital');
     const [showManagementDropdown, setShowManagementDropdown] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
+    const [pendingLogout, setPendingLogout] = useState(false);
+    const navigate = useNavigate();
+
 
     // =========================================
     // Effects
@@ -166,6 +180,14 @@ const Nav = memo(function Nav() {
     }, [navigate]);
 
     const handleLogout = useCallback(() => {
+        const count = getAssessmentCount();
+
+        if (count > 0) {
+            setPendingLogout(true);
+            setShowLogoutModal(true);
+        return;
+        }
+
         sessionStorage.removeItem('selectedShift');
         sessionStorage.removeItem('selectedRotation');
         setSelectedShift('');
@@ -306,12 +328,62 @@ const Nav = memo(function Nav() {
                 justifyContent: 'center',
                 color: 'white'
             }
+        },
+        modalDialog:{
+            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)',
+            border: '2px solid #000000',
+            
+        },
+        modalBody:{
+            backgroundColor: '#ececec',
+            paddingBottom: '0px'
+        },
+        modalFooter:{
+            borderTop: 'none',
+            backgroundColor: '#ececec', 
+            flexDirection:"column"  
+        },
+        modalButtonContainer:{
+            width: '95%',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '0 8px'
+        },
+        modalDivider:{
+            width: '95%',        
+            border: '3px solid #000000',
+            margin: '0px 12px 12px 12px',
+            opacity: '0.45',
+            borderRadius: '2px'
+        },
+        modalCloseBtn:{
+            width: '32px',
+            height: '32px',
+            borderRadius: '50%',
+            backgroundColor: '#00569c',
+            color: 'white',
+            border: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '20px',
+            cursor: 'pointer',
+        },
+        modalHeader: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
         }
+
+        
     }), [isMobileMenuOpen]);
 
     // =========================================
     // Render
     // =========================================
+
+
     return (
         <nav style={styles.nav}>
             {/* Mobile menu button */}
@@ -331,8 +403,13 @@ const Nav = memo(function Nav() {
                             className="btn btn-primary" 
                             style={{ 
                                 backgroundColor: '#004780',
+                                border: 'none',
+                                color: 'white',
+                                transition: 'all 0.2s ease',          
                                 '@media (maxWidth: 768px)': { width: '100%', textAlign: 'left' }
                             }}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
                         >
                             Patients
                         </Link>
@@ -341,8 +418,13 @@ const Nav = memo(function Nav() {
                             className="btn btn-primary" 
                             style={{ 
                                 backgroundColor: '#004780',
+                                border: 'none',
+                                color: 'white',
+                                transition: 'all 0.2s ease',
                                 '@media (maxWidth: 768px)': { width: '100%', textAlign: 'left' }
                             }}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
                         >
                             Intake Form
                         </Link>
@@ -371,8 +453,13 @@ const Nav = memo(function Nav() {
                                 style={{ 
                                     backgroundColor: '#004780',
                                     border: 'none',
+                                    width: "190px",
+                                    transition: 'all 0.2s ease',
+                    
                                     '@media (maxWidth: 768px)': { width: '100%', textAlign: 'left' }
                                 }}
+                                onMouseEnter={handleMouseEnter}
+                                onMouseLeave={handleMouseLeave}
                             >
                                 Management <i className="bi bi-caret-down-fill"></i>
                             </button>
@@ -384,7 +471,21 @@ const Nav = memo(function Nav() {
                     )}
 
                     {/* Full name (desktop) */}
-                    <div style={styles.fullName}>{user?.fullName}</div>
+                     <Link 
+                            to="/nurse" 
+                            className="btn btn-primary" 
+                            style={{ 
+                                backgroundColor: '#004780',
+                                border: 'none',
+                                color: 'white',
+                                transition: 'all 0.2s ease',
+                                '@media (maxWidth: 768px)': { width: '100%', textAlign: 'left' }
+                            }}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
+                        >
+                            {user?.fullName}
+                        </Link>
                     
                     {/* Initials (smaller screens) */}
                     <div style={styles.nameInitials}>
@@ -408,6 +509,73 @@ const Nav = memo(function Nav() {
                     >
                         Log out
                     </button>
+
+
+                    {/* Log out confirmation modal, should only appear when there are outstanding assesments to publish */}
+                    <div 
+                    className={`modal fade ${showLogoutModal ? "show d-block" : ""}`} 
+                    tabIndex="-1"
+                    role="dialog"
+                    >
+                        <div className="modal-dialog modal-dialog-centered" role="document" >
+                            <div className="modal-content" style = {styles.modalDialog}>
+
+                                <div className="modal-header" style = {styles.modalHeader}>
+                                    <h5 className="modal-title">! Unpublished Assessments</h5>
+
+                                    <button 
+                                        type="button" 
+                                        className="close" 
+                                        onClick={() => setShowLogoutModal(false)}
+                                        style = {styles.modalCloseBtn}
+                                        >
+                                        <span>&times;</span>
+                                    </button>
+
+                                </div>
+
+                                <div className="modal-body" style={styles.modalBody}>
+                                    <p>You have outstanding assessments that haven't been published yet. Logging out now may lose this data. <br/><br/>
+                                    To publish, return to the Patients page and click the publish assesments button.
+                                    </p>
+                                </div>
+
+                                <div className="modal-footer" style = {styles.modalFooter}>
+                                    <hr style={styles.modalDivider}></hr>
+
+                                    <div style = {styles.modalButtonContainer}>
+                                        <button 
+                                            className="btn btn-danger"
+                                            onClick={() => {
+                                                setShowLogoutModal(false);
+                                                sessionStorage.removeItem('selectedShift');
+                                                setSelectedShift('');
+                                                logout();
+                                                navigate("/login")
+                                            }}
+                                            >
+                                            Log Out Anyway
+                                        </button>
+
+                                        <button 
+                                            className="btn btn-primary" 
+                                            onClick={() => {
+                                                setShowLogoutModal(false);
+                                                navigate("/")
+                                            }}
+                                            >
+                                            Return to Patients
+                                        </button>
+                                    </div>
+                                    
+
+                                </div>
+
+                            </div>
+                        </div>
+                    
+                    </div>
+
                 </div>
             )}
         </nav>
