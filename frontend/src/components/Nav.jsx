@@ -143,7 +143,6 @@ const Nav = memo(function Nav() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [showLogoutModal, setShowLogoutModal] = useState(false);
     const [pendingLogout, setPendingLogout] = useState(false);
-    const navigate = useNavigate();
 
 
     // =========================================
@@ -584,5 +583,6 @@ const Nav = memo(function Nav() {
 
 // Display name for debugging
 Nav.displayName = 'Nav';
+
 
 export default Nav;
