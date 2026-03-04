@@ -150,8 +150,8 @@ const Nav = memo(function Nav() {
         const count = getAssessmentCount();
 
         if (count > 0) {
-        setPendingLogout(true);
-        setShowLogoutModal(true);
+            setPendingLogout(true);
+            setShowLogoutModal(true);
         return;
         }
 
@@ -500,7 +500,7 @@ const Nav = memo(function Nav() {
                                 </div>
 
                                 <div className="modal-body" style={styles.modalBody}>
-                                    <p>You still have assessments that haven't been published. Logging out now may lose this data. <br/><br/>
+                                    <p>You have outstanding assessments that haven't been published yet. Logging out now may lose this data. <br/><br/>
                                     To publish, return to the Patients page and click the publish assesments button.
                                     </p>
                                 </div>
@@ -516,6 +516,7 @@ const Nav = memo(function Nav() {
                                                 sessionStorage.removeItem('selectedShift');
                                                 setSelectedShift('');
                                                 logout();
+                                                navigate("/login")
                                             }}
                                             >
                                             Log Out Anyway
