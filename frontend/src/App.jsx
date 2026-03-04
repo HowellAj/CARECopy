@@ -7,6 +7,7 @@ import Logout from "./routes/Logout";
 import AdminProfile from "./routes/AdminProfile";
 import ClassProfile from "./routes/ClassProfile";
 import CreateClass from "./routes/CreateClass";
+import EditClass from "./routes/EditClass"
 import Patients from './routes/Patients.jsx'
 import PatientProfile from "./routes/PatientProfile";
 import NurseProfile from "./routes/NurseProfile.jsx"
@@ -76,6 +77,8 @@ function App() {
             <Route path="admin" element={<AdminProfile />} />
             <Route path="admin/class/:id" element={<ClassProfile />} />
             <Route path="admin/class/create" element={<CreateClass />} />
+            <Route path="admin/class/edit/:id" element={<EditClass />} />
+
           </Route>
 
           <Route element={<RequireAuth allowedRoles={['Admin']}/>} > 

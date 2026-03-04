@@ -1,7 +1,7 @@
 export const msalConfig = {
     auth: {
-        clientId: "4e0040eb-c063-462f-80c7-4fdd3e539087",
-        authority: "https://login.microsoftonline.com/b665cc9e-52ca-43e5-b2e6-86c18a12b59a",
+        clientId: "9f2a46b2-8d12-4f09-bf3c-b70df9410974",
+        authority: "https://login.microsoftonline.com/bc28b062-7c3d-4625-9945-eb992c5897c9",
         redirectUri: "http://localhost:5173",
     },
     cache: {
@@ -11,5 +11,5 @@ export const msalConfig = {
 };
 
 export const loginRequest = {
-    scopes: ["api://c7012d5d-9077-4ae2-b0c6-4cc7938af46d/access_as_user"]
+    scopes: ["api://e99e37e2-d579-4f89-b5d2-50d5dd449bae/access_as_user"]
 };
