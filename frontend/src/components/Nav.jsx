@@ -1,4 +1,4 @@
-import { Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useUser } from '../context/UserContext';
@@ -13,11 +13,21 @@ import PropTypes from 'prop-types';
 // Sub-Components
 // =========================================
 
-const ShiftIndicator = memo(function ShiftIndicator({ selectedShift, styles }) {
+const ShiftIndicator = memo(function ShiftIndicator({ selectedShift, selectedRotation, styles, onClick }) {
   return (
-    <div style={styles?.indicator}>
+    <div 
+      style={{
+        ...styles?.indicator,
+        cursor: 'pointer',
+        transition: 'opacity 0.2s'
+      }}
+      onClick={onClick}
+      onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+      onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+      title="Click to change shift/rotation"
+    >
       <i className="bi bi-clock" style={{ fontSize: '18px' }}></i>
-      <span>{selectedShift} Shift</span>
+      <span>{selectedShift} Shift ({selectedRotation})</span>
     </div>
   );
 });
@@ -26,7 +36,9 @@ ShiftIndicator.displayName = 'ShiftIndicator';
 
 ShiftIndicator.propTypes = {
   selectedShift: PropTypes.string.isRequired,
-  styles: PropTypes.object
+  styles: PropTypes.object,
+  selectedRotation: PropTypes.string.isRequired,
+  onClick: PropTypes.func
 };
 
 // =========================================
@@ -123,7 +135,9 @@ const Nav = memo(function Nav() {
     // State and Context
     // =========================================
     const { user, logout } = useUser();
+    const navigate = useNavigate();
     const [selectedShift, setSelectedShift] = useState('');
+    const [selectedRotation, setSelectedRotation] = useState('');
     const [selectedUnit, setSelectedUnit] = useState('Harbourside Hospital');
     const [showManagementDropdown, setShowManagementDropdown] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -143,9 +157,28 @@ const Nav = memo(function Nav() {
         return () => window.removeEventListener('shiftSelected', handleShiftChange);
     }, []);
 
+    useEffect(() => {
+        const handleRotationChange = (event) => {
+            setSelectedRotation(event.detail.rotationName);
+        };
+        window.addEventListener('rotationSelected', handleRotationChange);
+        return () => window.removeEventListener('rotationSelected', handleRotationChange);
+    }, []);
+
     // =========================================
     // Event Handlers
     // =========================================
+    const handleClearShift = useCallback(() => {
+        const confirmed = window.confirm('Are you sure you want to change your shift and rotation? This will take you back to the selection page.');
+        if (confirmed) {
+            sessionStorage.removeItem('selectedShift');
+            sessionStorage.removeItem('selectedRotation');
+            setSelectedShift('');
+            setSelectedRotation('');
+            navigate('/');
+        }
+    }, [navigate]);
+
     const handleLogout = useCallback(() => {
         const count = getAssessmentCount();
 
@@ -156,7 +189,9 @@ const Nav = memo(function Nav() {
         }
 
         sessionStorage.removeItem('selectedShift');
+        sessionStorage.removeItem('selectedRotation');
         setSelectedShift('');
+        setSelectedRotation('');
         logout();
     }, [logout]);
 
@@ -403,7 +438,7 @@ const Nav = memo(function Nav() {
             {user && (
                 <div style={styles.rightSection}>
             
-                    {selectedShift && <ShiftIndicator selectedShift={selectedShift} styles={styles} />}
+                    {selectedShift && <ShiftIndicator selectedShift={selectedShift} selectedRotation={selectedRotation} styles={styles} onClick={handleClearShift} />}
                     <UnitIndicator selectedUnit={selectedUnit} styles={styles} />
 
                     {/* MANAGEMENT DROPDOWN (For admin use ONLY) */}
