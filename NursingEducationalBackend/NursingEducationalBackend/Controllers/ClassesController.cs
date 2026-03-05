@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NursingEducationalBackend.DTOs;
@@ -24,7 +23,7 @@ namespace NursingEducationalBackend.Controllers
 
         // GET: api/Classes
         [HttpGet]
-        [Authorize(Roles = "Admin, Instructor")]
+        [Authorize(Roles = "Admin,Instructor")]
         public async Task<ActionResult<IEnumerable<Class>>> GetClasses()
         {
             if (User.IsInRole("Admin"))
@@ -45,16 +44,16 @@ namespace NursingEducationalBackend.Controllers
                     .ToListAsync();
 
                 return Ok(overviews);
-            } 
+            }
             else
             {
                 // Get user identity from Entra token
-                var entraUserId = User.FindFirst("oid")?.Value 
-                    ?? User.FindFirst("sub")?.Value 
+                var entraUserId = User.FindFirst("oid")?.Value
+                    ?? User.FindFirst("sub")?.Value
                     ?? User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
-                
-                var email = User.FindFirst("preferred_username")?.Value 
-                    ?? User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value 
+
+                var email = User.FindFirst("preferred_username")?.Value
+                    ?? User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value
                     ?? User.FindFirst("email")?.Value
                     ?? User.FindFirst("upn")?.Value
                     ?? User.FindFirst(System.Security.Claims.ClaimTypes.Upn)?.Value
@@ -96,12 +95,11 @@ namespace NursingEducationalBackend.Controllers
 
                 return Ok(overviews);
             }
-
         }
 
         // GET: api/Classes/5
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin, Instructor")]
+        [Authorize(Roles = "Admin,Instructor")]
         public async Task<ActionResult<Class>> GetClass(int id)
         {
             var @class = await _context.Classes.FindAsync(id);
@@ -114,10 +112,9 @@ namespace NursingEducationalBackend.Controllers
             return @class;
         }
 
-
-        // GET: /api/Class/{id}/students
+        // GET: api/Classes/{id}/students
         [HttpGet("{id}/students")]
-        [Authorize(Roles = "Admin, Instructor")]
+        [Authorize(Roles = "Admin,Instructor")]
         public async Task<ActionResult<IEnumerable<Nurse>>> GetClassStudents(int id)
         {
             var classExists = await _context.Classes.FindAsync(id);
@@ -138,7 +135,7 @@ namespace NursingEducationalBackend.Controllers
             return Ok(studentsFromClass);
         }
 
-        //Verify join codes
+        // Verify join codes
         [HttpGet("verify/{id}")]
         public async Task<ActionResult> VerifyJoinCode(string id)
         {
@@ -151,12 +148,33 @@ namespace NursingEducationalBackend.Controllers
             return Ok();
         }
 
+        // GET: api/campus/{campusId}/classes
+        [HttpGet("/api/campus/{campusId}/classes")]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<Class>>> GetClassesByCampus(int campusId)
+        {
+            return await _context.Classes
+                .Where(c => c.CampusId == campusId)
+                .ToListAsync();
+        }
 
+        // POST: api/campus/{campusId}/classes
+        [HttpPost("/api/campus/{campusId}/classes")]
+        [Authorize(Roles = "Admin,Instructor")]
+        public async Task<ActionResult<Class>> CreateClassInCampus(int campusId, Class newClass)
+        {
+            newClass.CampusId = campusId;
+
+            _context.Classes.Add(newClass);
+            await _context.SaveChangesAsync();
+
+           
+            return CreatedAtAction(nameof(GetClass), new { id = newClass.ClassId }, newClass);
+        }
 
         // PUT: api/Classes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin, Instructor")]
+        [Authorize(Roles = "Admin,Instructor")]
         public async Task<IActionResult> PutClass(int id, Class @class)
         {
             if (id != @class.ClassId)
@@ -186,18 +204,17 @@ namespace NursingEducationalBackend.Controllers
         }
 
         // POST: api/Classes
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize(Roles = "Admin, Instructor")]
+        [Authorize(Roles = "Admin,Instructor")]
         public async Task<ActionResult<Class>> PostClass(ClassCreateDTO @class)
         {
             // Get user identity from Entra token
-            var entraUserId = User.FindFirst("oid")?.Value 
-                ?? User.FindFirst("sub")?.Value 
+            var entraUserId = User.FindFirst("oid")?.Value
+                ?? User.FindFirst("sub")?.Value
                 ?? User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
-            
-            var email = User.FindFirst("preferred_username")?.Value 
-                ?? User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value 
+
+            var email = User.FindFirst("preferred_username")?.Value
+                ?? User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value
                 ?? User.FindFirst("email")?.Value
                 ?? User.FindFirst("upn")?.Value
                 ?? User.FindFirst(System.Security.Claims.ClaimTypes.Upn)?.Value
@@ -221,7 +238,16 @@ namespace NursingEducationalBackend.Controllers
 
             int instructorId = instructor.NurseId;
 
-            Class newClass = new() { Name = @class.Name, Description = @class.Description != null ? @class.Description : "", StartDate = @class.StartDate, EndDate = @class.EndDate, JoinCode = GenerateJoinCode(), InstructorId = instructorId };
+            Class newClass = new()
+            {
+                Name = @class.Name,
+                Description = @class.Description ?? "",
+                StartDate = @class.StartDate,
+                EndDate = @class.EndDate,
+                JoinCode = GenerateJoinCode(),
+                InstructorId = instructorId,
+                CampusId = @class.CampusId 
+            };
 
             _context.Classes.Add(newClass);
             await _context.SaveChangesAsync();
@@ -235,10 +261,10 @@ namespace NursingEducationalBackend.Controllers
                 InstructorId = newClass.InstructorId,
                 StartDate = newClass.StartDate,
                 EndDate = newClass.EndDate,
-                StudentCount = newClass.Students.Count
+                StudentCount = newClass.Students?.Count ?? 0
             };
 
-            return CreatedAtAction("GetClass", new { id = newClassDTO.ID }, newClassDTO);
+            return CreatedAtAction(nameof(GetClass), new { id = newClassDTO.ID }, newClassDTO);
         }
 
         // DELETE: api/Classes/5
@@ -265,17 +291,14 @@ namespace NursingEducationalBackend.Controllers
 
         private string GenerateJoinCode()
         {
-            //The length of our join code.
             const int codeLength = 6;
-
-            //Define the characters that will appear in our join codes - for now just capital letters.
             const string validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
             var random = new Random();
 
             while (true)
             {
-                string generatedCode = new string(Enumerable.Repeat(validChars, codeLength).Select(s => s[random.Next(validChars.Length)]).ToArray());
+                string generatedCode = new string(Enumerable.Repeat(validChars, codeLength)
+                    .Select(s => s[random.Next(validChars.Length)]).ToArray());
 
                 bool codeExists = _context.Classes.Any(c => c.JoinCode == generatedCode);
 
