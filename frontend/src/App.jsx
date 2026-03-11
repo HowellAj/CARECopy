@@ -14,9 +14,13 @@ import NurseProfile from "./routes/NurseProfile.jsx"
 import PatientADL from "./routes/PatientADL";
 import PatientBehaviour from "./routes/PatientBehaviour";
 import PatientCognitive from "./routes/PatientCognitive";
+import PatientDischargeChecklist from "./routes/PatientDischargeChecklist.jsx";
 import PatientElimination from "./routes/PatientElimination";
+import PatientLabsDiagnosticsBlood from "./routes/PatientLabsDiagnosticsBlood";
 import PatientMobilityAndSafety from "./routes/PatientMobilityAndSafety";
+import PatientNEWS2 from "./routes/PatientNEWS2";
 import PatientProgressNote from "./routes/PatientProgressNote";
+import PatientAcuteProgress from "./routes/PatientAcuteProgress";
 import PatientSkinSensoryAid from "./routes/PatientSkinSensoryAid";
 import PatientNutrition from "./routes/PatientNutrition";
 import Unauthorized from "./routes/Unauthorized.jsx";
@@ -28,6 +32,7 @@ import RegistrationInstructor from "./routes/RegistrationInstructor.jsx";
 import ClassCodeEnrollment from "./routes/ClassCodeEnrollment.jsx";
 import { useMsal } from "@azure/msal-react";
 import IdleSessionManager from "./components/IdleSessionManager.jsx"
+import PatientConsultCurrentIllness from "./routes/PatientConsultCurrentIllness.jsx";
 
 function App() {
   const { instance } = useMsal();
@@ -61,19 +66,24 @@ function App() {
           <Route path="unauthorized" element={<Unauthorized />} />
           
 
-          {/* protected routes */}
-          <Route element={<RequireAuth allowedRoles={['Nurse', 'Admin', 'Instructor']}/>} >
-            <Route path="/" element={<Patients />} />
-            <Route path="intake" element={<CreatePatient />} />
-            <Route path="patients/:id" element={<PatientProfile />} />
-            <Route path="patients/:id/adl" element={<PatientADL />} />
-            <Route path="patients/:id/behaviour" element={<PatientBehaviour />} />
-            <Route path="patients/:id/cognitive" element={<PatientCognitive />} />
-            <Route path="patients/:id/elimination" element={<PatientElimination />} />
-            <Route path="patients/:id/mobilityandsafety" element={<PatientMobilityAndSafety />} />
-            <Route path="patients/:id/nutrition" element={<PatientNutrition />} />
-            <Route path="patients/:id/progressnote" element={<PatientProgressNote />} />
-            <Route path="patients/:id/skinandsenoryaid" element={<PatientSkinSensoryAid />} />
+        {/* protected routes */}
+        <Route element={<RequireAuth allowedRoles={['Nurse', 'Admin', 'Instructor']}/>} >
+          <Route path="/" element={<Patients />} />
+          <Route path="intake" element={<CreatePatient />} />
+          <Route path="patients/:id" element={<PatientProfile />} />
+          <Route path="patients/:id/adl" element={<PatientADL />} />
+          <Route path="patients/:id/behaviour" element={<PatientBehaviour />} />
+          <Route path="patients/:id/cognitive" element={<PatientCognitive />} />
+          <Route path="patients/:id/consultcurrentillness" element={<PatientConsultCurrentIllness />} />
+          <Route path="patients/:id/dischargechecklist" element={<PatientDischargeChecklist />} />
+          <Route path="patients/:id/elimination" element={<PatientElimination />} />
+          <Route path ="patients/:id/labsdiagnosticsblood" element={<PatientLabsDiagnosticsBlood />} />
+          <Route path="patients/:id/mobilityandsafety" element={<PatientMobilityAndSafety />} />
+          <Route path="patients/:id/news2" element={<PatientNEWS2 />} />
+          <Route path="patients/:id/nutrition" element={<PatientNutrition />} />
+          <Route path="patients/:id/progressnote" element={<PatientProgressNote />} />
+          <Route path="patients/:id/acuteprogress" element={<PatientAcuteProgress />} />
+          <Route path="patients/:id/skinandsenoryaid" element={<PatientSkinSensoryAid />} />
 
             <Route element={<RequireAuth allowedRoles={['Instructor', 'Admin']}/>} >
               <Route path="admin" element={<AdminProfile />} />
