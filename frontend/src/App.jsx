@@ -30,6 +30,7 @@ import RequireAuth from "./routes/RequireAuth.jsx";
 import InstructorProfile from "./routes/InstructorProfile.jsx";
 import RegistrationInstructor from "./routes/RegistrationInstructor.jsx";
 import ClassCodeEnrollment from "./routes/ClassCodeEnrollment.jsx";
+import CampusProfile from './routes/CampusProfile.jsx'
 import { useMsal } from "@azure/msal-react";
 import IdleSessionManager from "./components/IdleSessionManager.jsx"
 import PatientConsultCurrentIllness from "./routes/PatientConsultCurrentIllness.jsx";
@@ -90,6 +91,7 @@ function App() {
               <Route path="admin/class/:id" element={<ClassProfile />} />
               <Route path="admin/class/create" element={<CreateClass />} />
               <Route path="admin/class/edit/:id" element={<EditClass />} />
+              <Route path="admin/campus/:id" element={<CampusProfile />} />
 
             </Route>
 
