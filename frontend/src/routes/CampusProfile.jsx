@@ -25,7 +25,7 @@ const CampusProfile = () => {
             console.error(`Error fetching campus/${id}`, error);
         }
         //Get campuses class info
-        //  fetchClassInfo();
+         fetchClassInfo();
         };
 
     fetchData();
@@ -34,20 +34,19 @@ const CampusProfile = () => {
 
   const handleRemoveClass = async (classId) => {
     try {
-      console.log(`Removing class ${classId} from campus ${id} - API call placeholder`);
-      let class_edit = campusInfo.classes.find(c => c.classId === classId);
-      if (class_edit === null) { return; }
-      class_edit.campusId = null;
-      class_edit.campus = null;
+        console.log(`Removing class ${classId} from campus ${id} - API call placeholder`);
+        let class_edit = campusInfo.classes.find(c => c.classId === classId);
 
-      await axios.put(`/api/class/${classId}`, class_edit);
+        console.log(class_edit)
+        if (class_edit === null) { return; }
 
-      const campusResponse = await axios.get(`/api/campus/${id}`);
-      setCampusInfo(campusResponse.data);
-    
+        await axios.put(`/api/classes/${classId}/remove-campus`);
+
+        const campusResponse = await axios.get(`/api/campus/${id}`);
+        setCampusInfo(campusResponse.data)
  
     } catch (error) {
-      console.error('Error removing nurse:', error);
+      console.error('Error removing class:', error);
     }
   };
 
@@ -66,16 +65,16 @@ const CampusProfile = () => {
                 <TableCell><strong>Name</strong></TableCell>
                 <TableCell><strong>Instructor</strong></TableCell>
                 <TableCell><strong>Join Code</strong></TableCell>
-                <TableCell><strong>Actions</strong></TableCell>
+                {/* <TableCell><strong>Actions</strong></TableCell> */}
             </TableRow>
             </TableHead>
             <TableBody>
                 {campusInfo.classes.map((c) => (
                     <TableRow key={c.classId}>
                     <TableCell>{c.name}</TableCell>
-                    <TableCell>{c.instructor?.name}</TableCell>
+                    <TableCell>{c.instructorId}</TableCell>
                     <TableCell>{c.joinCode}</TableCell>
-                    <TableCell>
+                    {/* <TableCell>
                         <Button 
                         variant="contained" 
                         color="error" 
@@ -83,7 +82,7 @@ const CampusProfile = () => {
                         >
                         Remove
                         </Button>
-                    </TableCell>
+                    </TableCell> */}
                     </TableRow>
                 ))}
             </TableBody>

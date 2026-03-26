@@ -224,6 +224,23 @@ namespace NursingEducationalBackend.Controllers
             return CreatedAtAction(nameof(GetClass), new { id = newClassDTO.ID }, newClassDTO);
         }
 
+        
+        [HttpPut("{id}/remove-campus")]
+        [Authorize(Roles = "Admin,Instructor")]
+        public async Task<IActionResult> RemoveCampusFromClass(int id)
+        {
+            var cls = await _context.Classes.FindAsync(id);
+            if (cls == null)
+                return NotFound();
+
+            // Because CampusId is NOT nullable, move to a special value (0 or -1)
+            cls.CampusId = 0; 
+
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+
         // DELETE: api/Classes/5
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
