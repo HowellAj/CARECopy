@@ -76,17 +76,19 @@ namespace NursingEducationalBackend.Controllers
 
         // GET: api/Classes/5
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin,Instructor")]
+        [Authorize(Roles = "Admin,Instructor,Nurse")]
         public async Task<ActionResult<Class>> GetClass(int id)
         {
-            var @class = await _context.Classes.FindAsync(id);
 
-            if (@class == null)
-            {
-                return NotFound();
-            }
+            var cls = await _context.Classes
+                .Include(c => c.Campus)
+                .Include(c => c.Instructor)
+                .FirstOrDefaultAsync(c => c.ClassId == id);
 
-            return @class;
+            if (cls == null) return NotFound();
+
+            return cls;
+
         }
 
         // GET: api/Classes/{id}/students
