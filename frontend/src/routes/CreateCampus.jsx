@@ -31,20 +31,6 @@ import { Snackbar, Alert } from '@mui/material';
       }));
     }
 
-    // React.useEffect(() => {
-    //   const fetchCampuses = async () => {
-    //     try {
-    //       const res = await axios.get('/api/campus'); 
-    //       console.log("Campus response ",res.data)
-    //       setCampuses(res.data);
-    //     } catch (err) {
-    //       console.error("Failed to load campuses", err);
-    //     }
-    //   };
-
-    //   fetchCampuses();
-        
-    //   }, []);
 
     const handleSubmit = async (e) => {
       e.preventDefault();
