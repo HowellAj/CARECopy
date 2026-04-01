@@ -121,7 +121,7 @@ const handleCampusDelete = async (id) => {
         <h1 className="mb-3 text-center"> Campuses </h1>
 
         <div className="mb-3 text-center">
-          <button className="btn btn-primary"  onClick={() => {navigate('/admin/class/create')}}>
+          <button className="btn btn-primary"  onClick={() => {navigate('/admin/campus/create')}}>
             <i className="bi bi-plus"></i> Add Campus
           </button>
         </div>
